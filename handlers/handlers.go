@@ -9,12 +9,14 @@ import (
 	"net/http"
 )
 
+// handler is here
 func HandleRequest(w http.ResponseWriter, r *http.Request) {
+
 	log.Println("Request recived: ", r.Method)
 
 	switch r.Method {
 	case http.MethodGet:
-		list(w, r)
+		display(w, r)
 		break
 	case http.MethodPost:
 		add(w, r)
@@ -24,10 +26,11 @@ func HandleRequest(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Method not allowed"))
 		break
 	}
+
 }
 
-func list(w http.ResponseWriter, r *http.Request) {
-	products := repository.GetProducts()
+func display(w http.ResponseWriter, r *http.Request) {
+	products := repository.GetDetails()
 	json, _ := json.Marshal(products) //ignored the error
 
 	w.Header().Add("Content-Type", "application/json")
@@ -35,24 +38,25 @@ func list(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 
 	log.Println("Response returned: ", 200)
+
 }
 
 func add(w http.ResponseWriter, r *http.Request) {
 	payload, _ := ioutil.ReadAll(r.Body)
 
-	var product models.Product
-	err := json.Unmarshal(payload, &product)
-	if err != nil || product.Name == "" || product.UnitPrice == 0 {
+	var person models.Person
+	err := json.Unmarshal(payload, &person)
+	if err != nil || person.Name == "" || person.Age == 0 {
 		w.WriteHeader(400)
 		w.Write([]byte("Bad Request"))
 		return
 	}
-	product.ID = repository.AddProduct(product)
+	person.ID = repository.AddPerson(person)
 
 	w.Header().Add("Content-type", "application/json")
 	w.WriteHeader(201)
 
-	json, _ := json.Marshal(product)
+	json, _ := json.Marshal(person)
 	w.Write(json)
 
 	log.Println("Response returned: ", 201)

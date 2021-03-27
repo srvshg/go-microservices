@@ -4,17 +4,17 @@ import (
 	"microserv/models"
 )
 
-var products []models.Product
+var people []models.Person
 var nextID = 1
 
-func GetProducts() []models.Product {
-	return products
+func GetDetails() []models.Person {
+	return people
 }
 
-func AddProduct(product models.Product) int {
-	product.ID = nextID
+func AddPerson(person models.Person) int {
+	person.ID = nextID
 	nextID++
-	products = append(products, product)
+	people = append(people, person)
 
-	return product.ID
+	return person.ID
 }

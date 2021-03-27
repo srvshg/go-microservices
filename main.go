@@ -8,17 +8,10 @@ import (
 	"net/http"
 )
 
-const message = "Hello World"
-
 func main() {
-	repository.AddProduct(models.Product{
-		Name:      "Milk",
-		UnitPrice: 5.00,
-	})
-
-	repository.AddProduct(models.Product{
-		Name:      "Bread",
-		UnitPrice: 4.00,
+	repository.AddPerson(models.Person{
+		Name: "Mike",
+		Age:  27,
 	})
 
 	http.HandleFunc("/", handlers.HandleRequest)
